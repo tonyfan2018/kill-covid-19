@@ -1,0 +1,405 @@
+<html>
+<head>
+<meta charset="utf-8" />
+<title>KILL COVID-19</title>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ZIM Zapps
+Progressive Web App (PWA) tool output from
+https://zimjs.com/zapps 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+<!-- ZIM PWA STEP 1 - MANIFEST -->
+<link rel="manifest" href="manifest.json">
+
+<!-- ZIM PWA STEP 2 - META -->
+<meta name="apple-mobile-web-app-title" content="kill covid-19">
+<meta name="theme-color" content="#333333">
+<meta name="msapplication-TileColor" content="#333333">
+
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<link rel="apple-touch-icon" href="icons/icon_152.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="msapplication-TileImage" content="icons/icon_144.png">
+
+<!-- should have faveicons - see link below -->
+<!-- see https://www.favicon-generator.org/ -->
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="msapplication-starturl" content="./">
+
+<!-- ZIM PWA STEP 3 - SERVICE WORKER -->
+<script>
+	window.addEventListener("DOMContentLoaded", function () {
+		if (location.protocol === "https:" && "serviceWorker" in navigator) navigator.serviceWorker.register("./serviceworker.js");
+	});
+</script>
+
+
+<script src="libraries/createjs.js"></script>
+<script src="libraries/zim.js"></script>
+<script src="libraries/game_2.4.js"></script>
+<!-- use zimjs.com/distill for minified individual functions! -->
+
+<script src="libraries/zimserver_urls.js"></script>
+
+
+<script>
+
+const scaling = "fit"; // this will resize to fit inside the screen dimensions
+const width = 800;
+const height = 1000;
+const color = "#eeeff3"; // ZIM colors like green, blue, pink, faint, clear, etc.
+const outerColor = "#26354e"; // any HTML colors like "violet", "#333", etc. are fine to use
+const assets = ["character.png","logo.png","bullet.wav","virusdie.wav","playerdie.wav","keyboard.png", "player(man).png","bullet.png",{src:"https://fonts.googleapis.com/css2?family=Bangers&display=swap"},{src:"https://fonts.googleapis.com/css2?family=Coda+Caption:wght@800&display=swap"}];
+const path="assets/";
+
+const frame = new Frame(scaling, width, height, color, outerColor, assets, path);
+	frame.on("ready", ()=>{
+		zog("ready from ZIM Frame");
+
+	// ZIM PWA STEP 4 - ADD TO HOME SCREEN (A2HS)
+	// NOTE: new PWA() works with ZIM Cat 04 or beyond
+	// Message shows if only if running from mobile Browser
+	// See https://zimjs.com/docs.html?item=PWA for more options
+
+	new PWA(runZapp);
+	function runZapp() {
+	
+			// often need below - so consider it part of the template
+			const stage = frame.stage;
+			const stageW = frame.width;
+			const stageH = frame.height;
+	
+			// REFERENCES for ZIM at https://zimjs.com
+			// see https://zimjs.com/intro.html for an intro example
+			// see https://zimjs.com/learn.html for video and code tutorials
+			// see https://zimjs.com/docs.html for documentation
+	
+		  // CODE HERE
+	
+		  const bind = new Bind({
+	         connection:"https://zimjs.com/codepen/hero.php",
+	         bindType:POST,
+	         report:false
+	     });
+	
+			const timerLabel = new Label({
+						   text:"Time:",
+						   size:50,
+						   color:"#26354e",
+						   bold:true,
+					   }).pos(17,25,LEFT,BOTTOM,timer);
+	        var timer = new Timer({
+						     time:0,
+							 step:10,
+							 decimals:2,
+							 down:false,
+							 startPaused:true,
+							 color:white,
+							 bold:true,
+							 font:"Coda Caption",
+							 backgroundColor:"#26354e"
+						 }).pos(150,20,LEFT,BOTTOM);
+	
+	
+			const scoreLabel = new Label({
+						 	text:"Score:",
+						 	size:50,
+						 	color:"#26354e",
+						 	bold:true,
+						}).pos(180,25,RIGHT,BOTTOM);
+	
+		 let score = 0;
+	
+		 const scoreNum =  new Scorer({score:0,
+									   color:white,
+									   backgroundColor:"#26354e",
+									   font:"Coda Caption"
+									  }).pos(25,25,RIGHT,BOTTOM);;
+	
+	
+		 const pane = new Pane({width:600,
+			  					height:400,
+								modal:false,
+								backdropClose: false,
+								displayClose:false,
+								backgroundColor: "#5b6a8a",
+					  		    backdropColor: "#bfbfbf",
+					  		    corner: [25, 25, 25, 25]
+							});
+	
+	
+		const name = new TextArea({
+					 height:80,
+					 width:350,
+					 placeholder:"Enter name",
+					 size:60,
+					 backgroundColor:"#eeeff3",
+					 wrap:false,
+					 corner:10,
+				 }).pos(0,55,CENTER,TOP,pane)
+					  // ^^^^^^^^^ BIND ^^^^^^^^^^^
+					.bind("name", "text"); // id and property or array of properties
+					  // ^^^^^^^^^^^^^^^^^^^^^^^^^^
+	
+		  const confirmLabel = new Label({
+		   text:"PLAY",
+		   size:70,
+		   font:"Bangers",
+		   color:"#fff",
+		   rollColor:"#394467",
+		});
+		  const confirm= new Button({
+		   label:confirmLabel,
+		   width:350,
+		   height:90,
+		   backgroundColor:"#fbab3f",
+		   shadowColor:"#eb7c24",
+		   shadowBlur:1,
+		   valign:"bottom",
+		   corner:15
+	   }).pos(0,5,CENTER,CENTER,pane);
+	
+	   const keyboard = asset("keyboard.png")
+	                    .sca(.8)
+						.pos(0,25,CENTER,BOTTOM,pane);
+	
+	
+		  	  const replayLabel = new Label({
+		  	   text:"REPLAY",
+		  	   size:80,
+		  	   font:"Bangers",
+		  	   color:"#fff",
+		  	   rollColor:"#394467",
+		  	});
+		  	  const replay= new Button({
+		  	   label:replayLabel,
+		  	   width:220,
+		  	   height:100,
+		  	   backgroundColor:"#fbab3f",
+		  	   shadowColor:"#eb7c24",
+		  	   shadowBlur:1,
+		  	   valign:"bottom",
+		  	   corner:15
+		   }).sca(0).centerReg().ord(10);
+	
+		   replay.on("click", function() {
+	 	     replay.animate({
+				 props:{scale:0},
+				 time:1,
+				 ease:"backIn"
+			 })
+	 	     zgo("kill-covid-19.html");
+	 	  });
+	
+		  pane.show();
+	
+		  const logo = asset("logo.png")
+		               .sca(.65).rot(-20)
+					   .pos(-40,35,LEFT,TOP);
+	
+		  const errorlabel = new Label({
+				   text:"*Please enter name",
+				   italic:true,
+				   align:CENTER,
+				   size:25,
+				   color:red,
+				   font:"verdana"
+			   }).alp(0).pos(40,25,CENTER,TOP,pane);
+	
+		const youlose = new Label({
+				 text:"GAME OVER!",
+				 italic:true,
+				 align:CENTER,
+				 size:100,
+				 color:red,
+				 font:"Coda Caption",
+			 }).pos(0,-100,CENTER,TOP);
+	
+	
+	
+		 confirm.on("click", function() {
+	
+	    if (name.text == "") {
+	
+			errorlabel.animate({
+				props:{alpha:1},
+				time:.1
+			});
+	
+			return;
+		}
+	
+			bind.toUnique({
+			extra:name.text,
+			filter:(data) => {
+	
+			var adjusted = {};
+			adjusted[data.name.text] = {
+			name:data.name.text
+			}
+	
+			playerName = data.name.text;
+	
+			return adjusted;
+			}, // end filter
+			call:result =>{
+			if (result.success) {
+				zog(result);
+				pane.hide();
+				logo.sca(0);
+				startGame();
+				timer.start(0);
+				name.removeFrom();
+					} //RESULT SUCCESS
+				} // end callback
+			}); // end bind to
+	}); //confrim function
+	
+	stage.update(); // this is needed to show any changes
+	
+	
+	
+	// game start....
+			function startGame(){
+				bind.from(name.text);
+				zog(name.text)
+				const bullet = asset("bullet.png")
+					  .sca(1.5)
+			    const player = new Container().center();
+				const playerOne = asset("player(man).png").centerReg(player);
+				let playerName = new Label({
+					     text:name.text,
+					     size:35,
+					     color:"#26354e",
+					     bold:true
+					 }).pos(0,-35,CENTER,TOP,player);
+	
+				// (50, 30, [pink, blue, green, red, orange, purple, grey], dark, 2)
+				const controller = new MotionController({
+				   target:player,
+				   type:"keydown",
+				   diagonal:true,
+				   damp:.1,
+				   rotate:false
+				});
+	
+	
+				frame.on("keydown", e => {
+				// zog(e.keyCode);
+				if (e.keyCode == 32) { // spacebar
+	
+					    asset("bullet.wav").play();
+						bullet.loc(player.x, player.y);
+						bullet.animate({
+						props:{y:-stageW},
+						time:.5,
+						ease:"easeIn",
+						call:()=>{
+								bullet.removeFrom();
+						}
+					})//animate
+				}
+	
+			});//keydown Function
+	
+			const xRandNum = [20,760,20,70];
+			const yRandNum = [550,20,20,600];
+	
+	
+		    const firstinterTime = interval(1, ()=>{
+	
+	
+				    const viruses = asset("character.png").clone().sca(.2).bot().centerReg()
+						  .loc(rand(stageW-(100,200)), rand(stageH-(100,200)));
+	
+					const speed = .0001;
+					const dampX = new Damp(viruses.x, speed);
+					const dampY = new Damp(viruses.y, speed);
+	
+	
+					const interTime = interval(.01, ()=>{
+	
+							Ticker.add(()=>{
+							  viruses.loc(dampX.convert(player.x), dampY.convert(player.y));
+	
+		             		});//Ticker
+	
+	
+							if(bullet.hitTestBounds(viruses)){
+	
+	
+									viruses.removeFrom();
+									asset("virusdie.wav").play();
+									score ++
+									scoreNum.score = score;
+									bind.to(scoreNum.score);
+									viruses.animate({
+									props:{scale:0,alpha:0},
+									time:.2,
+									ease:"bounceOutIn"
+													});
+									interTime.clear();
+									stage.update();
+							}
+	
+							  if (viruses.hitTestBounds(player)) {
+	
+									  player.removeFrom();
+									  asset("playerdie.wav").play();
+									  bullet.alp(0);
+									  viruses.animate({
+										  props:{scale:.4},
+										  time:.5,
+										  ease:"backOut"
+									  });
+									  interTime.clear();
+									  youlose.animate({
+										  props:{y:300},
+										  time:.5,
+										  ease:"backIn"
+									  })
+									  replay.animate({
+	
+										  props:{scale:1},
+										  time:1,
+										  wait:1,
+										  ease:"backOut"
+	
+									  })
+									  firstinterTime.clear();
+									  timer.stop();
+	
+									  bind.to(timer.time);
+									  zog("timervalue: " + decimals(timer.time));
+	
+									  stage.update();
+								   }
+	
+	
+	
+							   });//second intertime\
+	
+	
+					  }); //first intertime
+	
+	
+	
+	         }//game start;
+	
+	
+		} // end runZapp
+
+}); // end of ready
+
+</script>
+
+</head>
+<body></body>
+</html>
+
