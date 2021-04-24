@@ -227,9 +227,9 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 			 }).pos(0,-100,CENTER,TOP);
 
 
-	const bullet = asset("bullet.png").centerReg()
 
-	const hitBtn = new Circle(40,"#b4c1d8").pos(40,120,RIGHT,BOTTOM);
+
+		 	const hitBtn = new Circle(40,"#b4c1d8").pos(40,120,RIGHT,BOTTOM);
 
 		 confirm.on("click", function() {
 
@@ -275,10 +275,9 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 
 	// game start....
 			function startGame(){
-
 				bind.from(name.text);
 				zog(name.text)
-					  bullet.sca(1.5)
+				const bullet = asset("bullet.png").sca(1.5);
 			    const player = new Container().center();
 				const playerOne = asset("player(man).png").centerReg(player);
 				let playerName = new Label({
