@@ -7,7 +7,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ZIM Zapps
 Progressive Web App (PWA) tool output from
-https://zimjs.com/zapps 
+https://zimjs.com/zapps
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 
@@ -21,6 +21,11 @@ https://zimjs.com/zapps
 
 <meta name="viewport" content="width=device-width, user-scalable=no">
 <link rel="apple-touch-icon" href="icons/icon_152.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+<link rel="icon" type="image/x-icon" href="icons/favicon.ico">
+
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="msapplication-TileImage" content="icons/icon_144.png">
@@ -69,25 +74,25 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 
 	new PWA(runZapp);
 	function runZapp() {
-	
+
 			// often need below - so consider it part of the template
 			const stage = frame.stage;
 			const stageW = frame.width;
 			const stageH = frame.height;
-	
+
 			// REFERENCES for ZIM at https://zimjs.com
 			// see https://zimjs.com/intro.html for an intro example
 			// see https://zimjs.com/learn.html for video and code tutorials
 			// see https://zimjs.com/docs.html for documentation
-	
+
 		  // CODE HERE
-	
+
 		  const bind = new Bind({
 	         connection:"https://zimjs.com/codepen/hero.php",
 	         bindType:POST,
 	         report:false
 	     });
-	
+
 			const timerLabel = new Label({
 						   text:"Time:",
 						   size:50,
@@ -105,24 +110,24 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 							 font:"Coda Caption",
 							 backgroundColor:"#26354e"
 						 }).pos(150,20,LEFT,BOTTOM);
-	
-	
+
+
 			const scoreLabel = new Label({
 						 	text:"Score:",
 						 	size:50,
 						 	color:"#26354e",
 						 	bold:true,
 						}).pos(180,25,RIGHT,BOTTOM);
-	
+
 		 let score = 0;
-	
+
 		 const scoreNum =  new Scorer({score:0,
 									   color:white,
 									   backgroundColor:"#26354e",
 									   font:"Coda Caption"
 									  }).pos(25,25,RIGHT,BOTTOM);;
-	
-	
+
+
 		 const pane = new Pane({width:600,
 			  					height:400,
 								modal:false,
@@ -132,8 +137,8 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 					  		    backdropColor: "#bfbfbf",
 					  		    corner: [25, 25, 25, 25]
 							});
-	
-	
+
+
 		const name = new TextArea({
 					 height:80,
 					 width:350,
@@ -146,7 +151,7 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 					  // ^^^^^^^^^ BIND ^^^^^^^^^^^
 					.bind("name", "text"); // id and property or array of properties
 					  // ^^^^^^^^^^^^^^^^^^^^^^^^^^
-	
+
 		  const confirmLabel = new Label({
 		   text:"PLAY",
 		   size:70,
@@ -164,12 +169,12 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 		   valign:"bottom",
 		   corner:15
 	   }).pos(0,5,CENTER,CENTER,pane);
-	
+
 	   const keyboard = asset("keyboard.png")
 	                    .sca(.8)
 						.pos(0,25,CENTER,BOTTOM,pane);
-	
-	
+
+
 		  	  const replayLabel = new Label({
 		  	   text:"REPLAY",
 		  	   size:80,
@@ -187,22 +192,22 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 		  	   valign:"bottom",
 		  	   corner:15
 		   }).sca(0).centerReg().ord(10);
-	
+
 		   replay.on("click", function() {
 	 	     replay.animate({
 				 props:{scale:0},
 				 time:1,
 				 ease:"backIn"
 			 })
-	 	     zgo("kill-covid-19.html");
+	 	     zgo("index.html");
 	 	  });
-	
+
 		  pane.show();
-	
+
 		  const logo = asset("logo.png")
 		               .sca(.65).rot(-20)
 					   .pos(-40,35,LEFT,TOP);
-	
+
 		  const errorlabel = new Label({
 				   text:"*Please enter name",
 				   italic:true,
@@ -211,7 +216,7 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 				   color:red,
 				   font:"verdana"
 			   }).alp(0).pos(40,25,CENTER,TOP,pane);
-	
+
 		const youlose = new Label({
 				 text:"GAME OVER!",
 				 italic:true,
@@ -220,32 +225,32 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 				 color:red,
 				 font:"Coda Caption",
 			 }).pos(0,-100,CENTER,TOP);
-	
-	
-	
+
+
+
 		 confirm.on("click", function() {
-	
+
 	    if (name.text == "") {
-	
+
 			errorlabel.animate({
 				props:{alpha:1},
 				time:.1
 			});
-	
+
 			return;
 		}
-	
+
 			bind.toUnique({
 			extra:name.text,
 			filter:(data) => {
-	
+
 			var adjusted = {};
 			adjusted[data.name.text] = {
 			name:data.name.text
 			}
-	
+
 			playerName = data.name.text;
-	
+
 			return adjusted;
 			}, // end filter
 			call:result =>{
@@ -260,11 +265,11 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 				} // end callback
 			}); // end bind to
 	}); //confrim function
-	
+
 	stage.update(); // this is needed to show any changes
-	
-	
-	
+
+
+
 	// game start....
 			function startGame(){
 				bind.from(name.text);
@@ -279,61 +284,78 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 					     color:"#26354e",
 					     bold:true
 					 }).pos(0,-35,CENTER,TOP,player);
-	
+
 				// (50, 30, [pink, blue, green, red, orange, purple, grey], dark, 2)
 				const controller = new MotionController({
 				   target:player,
-				   type:"keydown",
+				   type:"follow",
 				   diagonal:true,
 				   damp:.1,
 				   rotate:false
 				});
-	
-	
+
+				function attack(){
+
+					asset("bullet.wav").play();
+					bullet.loc(player.x, player.y);
+					bullet.animate({
+					props:{y:-stageW},
+					time:.5,
+					ease:"easeIn",
+					call:()=>{
+							bullet.removeFrom();
+					}
+
+
+				});
+
+		} //attack function
+
+				const hitBtn = new Circle(30,"#5c6a8a").pos(40,120,RIGHT,BOTTOM);
+				      hitBtn.on("click", ()=>{
+
+						  attack();
+
+					 })
+					 
+				Style.add({hitBtn:{color:red}});
+
 				frame.on("keydown", e => {
 				// zog(e.keyCode);
 				if (e.keyCode == 32) { // spacebar
-	
-					    asset("bullet.wav").play();
-						bullet.loc(player.x, player.y);
-						bullet.animate({
-						props:{y:-stageW},
-						time:.5,
-						ease:"easeIn",
-						call:()=>{
-								bullet.removeFrom();
-						}
-					})//animate
+
+					  attack()
 				}
-	
+
 			});//keydown Function
-	
+
+
 			const xRandNum = [20,760,20,70];
 			const yRandNum = [550,20,20,600];
-	
-	
+
+
 		    const firstinterTime = interval(1, ()=>{
-	
-	
+
+
 				    const viruses = asset("character.png").clone().sca(.2).bot().centerReg()
 						  .loc(rand(stageW-(100,200)), rand(stageH-(100,200)));
-	
+
 					const speed = .0001;
 					const dampX = new Damp(viruses.x, speed);
 					const dampY = new Damp(viruses.y, speed);
-	
-	
+
+
 					const interTime = interval(.01, ()=>{
-	
+
 							Ticker.add(()=>{
 							  viruses.loc(dampX.convert(player.x), dampY.convert(player.y));
-	
+
 		             		});//Ticker
-	
-	
+
+
 							if(bullet.hitTestBounds(viruses)){
-	
-	
+
+
 									viruses.removeFrom();
 									asset("virusdie.wav").play();
 									score ++
@@ -347,9 +369,9 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 									interTime.clear();
 									stage.update();
 							}
-	
+
 							  if (viruses.hitTestBounds(player)) {
-	
+
 									  player.removeFrom();
 									  asset("playerdie.wav").play();
 									  bullet.alp(0);
@@ -365,34 +387,34 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 										  ease:"backIn"
 									  })
 									  replay.animate({
-	
+
 										  props:{scale:1},
 										  time:1,
 										  wait:1,
 										  ease:"backOut"
-	
+
 									  })
 									  firstinterTime.clear();
 									  timer.stop();
-	
+
 									  bind.to(timer.time);
 									  zog("timervalue: " + decimals(timer.time));
-	
+
 									  stage.update();
 								   }
-	
-	
-	
+
+
+
 							   });//second intertime\
-	
-	
+
+
 					  }); //first intertime
-	
-	
-	
+
+
+
 	         }//game start;
-	
-	
+
+
 		} // end runZapp
 
 }); // end of ready
@@ -402,4 +424,3 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 </head>
 <body></body>
 </html>
-
