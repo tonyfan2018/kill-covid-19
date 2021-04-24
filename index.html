@@ -227,6 +227,8 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 			 }).pos(0,-100,CENTER,TOP);
 
 
+	const bullet = asset("bullet.png").centerReg()
+
 
 		 confirm.on("click", function() {
 
@@ -274,8 +276,7 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 			function startGame(){
 				bind.from(name.text);
 				zog(name.text)
-				const bullet = asset("bullet.png")
-					  .sca(1.5)
+					  bullet.sca(1.5)
 			    const player = new Container().center();
 				const playerOne = asset("player(man).png").centerReg(player);
 				let playerName = new Label({
@@ -288,11 +289,18 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 				// (50, 30, [pink, blue, green, red, orange, purple, grey], dark, 2)
 				const controller = new MotionController({
 				   target:player,
-				   type:"follow",
+				   type:"mousemove",
 				   diagonal:true,
 				   damp:.1,
 				   rotate:false
 				});
+
+				const hitBtn = new Circle(40,"#b4c1d8").pos(40,120,RIGHT,BOTTOM);
+				      bullet.clone().sca(2.5).pos(0,0,CENTER,CENTER,hitBtn).animate({
+						  props:{rotation:360},
+						  		 time:1,
+								 loop:true
+					  });
 
 				function attack(){
 
@@ -311,13 +319,19 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 
 		} //attack function
 
-				const hitBtn = new Circle(30,"#5c6a8a").pos(40,120,RIGHT,BOTTOM);
+
 				      hitBtn.on("click", ()=>{
 
+						  hitBtn.animate({
+							  props:{scale:.5},
+							  time:.1,
+							  from:true,
+							  ease:"easeIn"
+						  });
 						  attack();
 
 					 })
-					 
+
 				Style.add({hitBtn:{color:red}});
 
 				frame.on("keydown", e => {
