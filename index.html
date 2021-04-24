@@ -229,6 +229,7 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 
 	const bullet = asset("bullet.png").centerReg()
 
+	const hitBtn = new Circle(40,"#b4c1d8").pos(40,120,RIGHT,BOTTOM);
 
 		 confirm.on("click", function() {
 
@@ -274,6 +275,7 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 
 	// game start....
 			function startGame(){
+
 				bind.from(name.text);
 				zog(name.text)
 					  bullet.sca(1.5)
@@ -295,12 +297,6 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 				   rotate:false
 				});
 
-				const hitBtn = new Circle(40,"#b4c1d8").pos(40,120,RIGHT,BOTTOM);
-				      bullet.clone().sca(2.5).pos(0,0,CENTER,CENTER,hitBtn).animate({
-						  props:{rotation:360},
-						  		 time:1,
-								 loop:true
-					  });
 
 				function attack(){
 
