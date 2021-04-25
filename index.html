@@ -86,11 +86,11 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 			// see https://zimjs.com/docs.html for documentation
 
 		  // CODE HERE
-
+		  var type = POST
 		  const bind = new Bind({
-	         connection:"https://zimjs.com/codepen/hero.php",
-	         bindType:POST,
-	         report:false
+	         connection:"https://zimjs.com/codepen/hero.php?type="+type,
+	         bindType:type,
+	         report:true
 	     });
 
 			const timerLabel = new Label({
@@ -425,6 +425,7 @@ const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 
 
 		} // end runZapp
+
 
 }); // end of ready
 

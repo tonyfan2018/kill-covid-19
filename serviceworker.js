@@ -1,12 +1,12 @@
 
 // ZIM Zapps PWA Service Worker to cache app files
 // Please check to see all files have been listed with local links
-// (Do not worry about icon files) 
+// (Do not worry about icon files)
 
 var cacheName = 'zim_pwa_kill_covid-19';
 var filesToCache = [
   './',
-  'kill-covid-19.html',
+  'index.html',
   'libraries/createjs.js',
   'libraries/zim.js',
   'libraries/game_2.4.js',
